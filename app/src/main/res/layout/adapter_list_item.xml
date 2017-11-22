@@ -1,36 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/ll_container"
+<android.support.v7.widget.CardView android:id="@+id/cv_container"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
-    <!--todo style this-->
-    <ImageView
-        android:id="@+id/iv_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    android:layout_margin="7dp"
+    android:paddingTop="10dp"
+    app:cardCornerRadius="6dp"
+    app:cardElevation="4dp"
+    app:cardUseCompatPadding="true">
 
     <RelativeLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_weight="1">
+        android:background="@drawable/rippley_effect">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/iv_image"
+            android:layout_width="110dp"
+            android:layout_height="130dp"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_margin="10dp" />
 
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Nice Movie" />
+            android:layout_marginTop="20dp"
+            android:layout_toEndOf="@id/iv_image"
+            android:layout_toRightOf="@id/iv_image"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="18sp"
+            tools:text="Nice momento to do it" />
 
         <TextView
             android:id="@+id/tv_rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_title"
-            android:textSize="10dp"
-            tools:text="Rating pro 9.8" />
-
+            android:layout_toEndOf="@id/iv_image"
+            android:layout_toRightOf="@id/iv_image"
+            android:textColor="@color/primaryTextColor"
+            tools:text="8.7" />
     </RelativeLayout>
-</LinearLayout>
+</android.support.v7.widget.CardView>

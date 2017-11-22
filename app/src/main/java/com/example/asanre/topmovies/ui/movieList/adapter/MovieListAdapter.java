@@ -2,12 +2,12 @@ package com.example.asanre.topmovies.ui.movieList.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.asanre.topmovies.R;
@@ -97,8 +97,8 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.ll_container)
-        LinearLayout container;
+        @BindView(R.id.cv_container)
+        CardView container;
         @BindView(R.id.iv_image)
         ImageView image;
         @BindView(R.id.tv_title)
