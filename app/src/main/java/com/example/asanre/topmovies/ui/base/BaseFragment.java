@@ -32,6 +32,11 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     }
 
     @Override
+    public void finishView() {
+
+    }
+
+    @Override
     public boolean isViewAlive() {
 
         return isAdded() && getActivity() != null && !getActivity().isFinishing();

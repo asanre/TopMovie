@@ -7,4 +7,6 @@ public interface BaseView {
     void hideLoading();
 
     boolean isViewAlive();
+
+    void finishView();
 }
