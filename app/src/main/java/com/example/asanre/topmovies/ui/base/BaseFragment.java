@@ -1,8 +1,9 @@
 package com.example.asanre.topmovies.ui.base;
 
-import android.app.Fragment;
+
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,16 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     protected abstract int getFragmentLayout();
 
     protected void prepareView(View view) {
+
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
 
     }
 

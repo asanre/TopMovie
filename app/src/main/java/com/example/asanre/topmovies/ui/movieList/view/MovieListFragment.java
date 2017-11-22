@@ -10,6 +10,7 @@ import com.example.asanre.topmovies.domain.model.IMovie;
 import com.example.asanre.topmovies.ui.base.BaseFragment;
 import com.example.asanre.topmovies.ui.movieList.adapter.MovieListAdapter;
 import com.example.asanre.topmovies.ui.movieList.presenter.MovieListPresenter;
+import com.example.asanre.topmovies.ui.moviedetail.controller.MovieDetailActivity;
 
 import java.util.List;
 
@@ -67,7 +68,7 @@ public class MovieListFragment extends BaseFragment
 
     private void startMovieDetailIntent(IMovie movie) {
 
-        //        startActivity(MovieDetailActivity.createIntent(getActivity(), movie));
+        startActivity(MovieDetailActivity.createIntent(getActivity(), movie));
     }
 
     private void setupRecycler(MovieListAdapter adapter) {

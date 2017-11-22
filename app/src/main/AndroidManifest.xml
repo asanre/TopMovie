@@ -20,6 +20,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.moviedetail.controller.MovieDetailActivity"
+            android:label="@string/movie_detail_label"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>
