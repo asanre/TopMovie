@@ -10,28 +10,21 @@ import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment implements BaseView {
 
     private Unbinder unbinder;
+
+    protected abstract int getFragmentLayout();
 
     protected void prepareView(View view) {
 
     }
 
-    protected void showLoading() {
-
-    }
-
-    protected void hideLoading() {
-
-    }
-
-    public boolean isSafeManipulateView() {
+    @Override
+    public boolean isViewAlive() {
 
         return isAdded() && getActivity() != null && !getActivity().isFinishing();
     }
-
-    protected abstract int getFragmentLayout();
 
     @Nullable
     @Override
