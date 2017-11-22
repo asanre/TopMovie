@@ -32,6 +32,14 @@ public class ApiManager {
                 .enqueue(new ServiceResponseHandler<>(callback));
     }
 
+    public void getSimilarMovies(ServiceCallback<MovieRepo> callback, int movieId, int page) {
+
+        RestClient.getClient()
+                .getRelatedMovies(movieId, getQueriesParams(page))
+                .enqueue(new ServiceResponseHandler<>(callback));
+
+    }
+
     private Map<String, String> getQueriesParams(int pageNumber) {
 
         String page = String.valueOf(pageNumber);

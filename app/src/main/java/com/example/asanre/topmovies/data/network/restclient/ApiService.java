@@ -15,5 +15,5 @@ public interface ApiService {
     Call<MovieRepo> getTopRateMovies(@QueryMap Map<String, String> options);
 
     @GET("{id}/similar")
-    Call<MovieRepo> getRelatedMovies(@Path("id") String id, @QueryMap Map<String, String> options);
+    Call<MovieRepo> getRelatedMovies(@Path("id") int id, @QueryMap Map<String, String> options);
 }

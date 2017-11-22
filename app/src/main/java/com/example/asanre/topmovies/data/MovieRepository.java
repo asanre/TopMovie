@@ -31,4 +31,9 @@ public class MovieRepository {
 
         apiManager.getTopMovies(callback, defaultPageNumber);
     }
+
+    public void getSimilarMovies(ServiceCallback<MovieRepo> callback, int movieId, int page) {
+
+        apiManager.getSimilarMovies(callback, movieId, page);
+    }
 }
