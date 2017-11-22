@@ -15,11 +15,22 @@ import com.example.asanre.topmovies.domain.model.IMovie;
 import com.example.asanre.topmovies.ui.moviedetail.adapter.SwipePagerAdapter;
 import com.example.asanre.topmovies.ui.moviedetail.presenter.MovieDetailPresenter;
 
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnPageChange;
+
 public class MovieDetailActivity extends AppCompatActivity implements MovieDetailView {
 
     private static String BUNDLE_MOVIE_DETAIL = "BUNDLE_MOVIE_DETAIL";
+
+    @BindView(R.id.pb_loading)
+    ProgressBar loading;
+    @BindView(R.id.pager)
+    ViewPager viewPager;
+
     private SwipePagerAdapter adapter;
-    private ProgressBar loading;
     private MovieDetailPresenter presenter;
 
     public static Intent createIntent(Context context, IMovie Movie) {
@@ -40,11 +51,12 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
             finish();
             return;
         }
+        ButterKnife.bind(this);
 
         IMovie movie = bundle.getParcelable(BUNDLE_MOVIE_DETAIL);
         if (movie != null) {
-            loading = findViewById(R.id.pb_loading);
-            presenter = new MovieDetailPresenter(this);
+            presenter = new MovieDetailPresenter(this, movie);
+            presenter.init();
             initAdapter(movie);
         }
     }
@@ -52,17 +64,13 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     @Override
     public void showLoading() {
 
-        if (loading != null) {
-            loading.setVisibility(View.VISIBLE);
-        }
+        loading.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoading() {
 
-        if (loading != null) {
-            loading.setVisibility(View.GONE);
-        }
+        loading.setVisibility(View.GONE);
     }
 
     @Override
@@ -71,10 +79,36 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         return !isFinishing();
     }
 
+    @Override
+    public void setAdapterData(List<IMovie> movies) {
+
+        adapter.addAll(movies);
+    }
+
+    @Override
+    public void finishView() {
+
+        finish();
+    }
+
+    @OnPageChange(value = R.id.pager, callback = OnPageChange.Callback.PAGE_SCROLL_STATE_CHANGED)
+    void onPageScrollStateChanged(int state) {
+
+        if (isLastPage(state)) {
+            presenter.getMoreSimilarMovies();
+        }
+    }
+
     private void initAdapter(IMovie movie) {
 
         adapter = new SwipePagerAdapter(getSupportFragmentManager(), movie);
-        ViewPager viewPager = findViewById(R.id.pager);
         viewPager.setAdapter(adapter);
+    }
+
+    private boolean isLastPage(int state) {
+
+        int lastIdx = adapter.getCount() - 1;
+        int curItem = viewPager.getCurrentItem();
+        return curItem == lastIdx && state == 1;
     }
 }
