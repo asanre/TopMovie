@@ -6,7 +6,7 @@ import com.example.asanre.topmovies.domain.model.IMovie;
 
 import java.util.List;
 
-public class GetTopMovies implements UseCase<List<IMovie>> {
+public class GetTopMovies implements UseCaseArgumentless<List<IMovie>> {
 
     @Override
     public void execute(ServiceCallback<List<IMovie>> callback) {
