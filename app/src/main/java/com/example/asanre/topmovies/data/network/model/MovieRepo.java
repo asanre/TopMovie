@@ -1,7 +1,5 @@
 package com.example.asanre.topmovies.data.network.model;
 
-import android.graphics.Movie;
-
 import com.google.gson.annotations.SerializedName;
 
 public class MovieRepo {
@@ -12,9 +10,9 @@ public class MovieRepo {
     @SerializedName("total_pages")
     private int totalPages;
     @SerializedName("results")
-    private Movie[] movies;
+    private MovieEntity[] movies;
 
-    public Movie[] getMovies() {
+    public MovieEntity[] getMovies() {
 
         return movies;
     }
