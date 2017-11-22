@@ -45,17 +45,28 @@ public class MovieDetailPresenter extends BasePresenter {
 
     private void fetchSimilarMovies(MovieParams params) {
 
+        if (isLoadDataOnDemand()) {
+            view.showLoading();
+        }
+
         getSimilarMovies.execute(new ServiceCallback<List<IMovie>>() {
 
             @Override
             public void onServiceResult(List<IMovie> movies) {
 
                 if (isViewAlive()) {
-                    if (movies.isEmpty()) {
-                        // TODO: 22/11/17 show error msg
-                        view.finishView();
+                    if (movies.isEmpty() && isLoadDataOnDemand()) {
+                        // TODO: 22/11/17 show msg telling its the end and close or just do nothing
+                        //                        view.finishView();
                     } else {
                         view.setAdapterData(movies);
+                        if (isLoadDataOnDemand()) {
+                            view.goNextPage();
+                        }
+                    }
+
+                    if (isLoadDataOnDemand()) {
+                        view.hideLoading();
                     }
                 }
             }
@@ -66,5 +77,23 @@ public class MovieDetailPresenter extends BasePresenter {
                 Log.d("", "");
             }
         }, params);
+    }
+
+    public boolean isLastPage(int state, int count, int currentItem) {
+
+        int lastIdx = count - 1;
+        return currentItem == lastIdx && state == 1;
+    }
+
+    private boolean isLoadDataOnDemand() {
+
+        return currentPage > 1;
+    }
+
+    public boolean shouldShowNextPage(int currentItem, int count) {
+
+        int nextPosition = currentItem + 1;
+        int lastIdx = count - 1;
+        return nextPosition < lastIdx;
     }
 }

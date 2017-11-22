@@ -86,6 +86,16 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     }
 
     @Override
+    public void goNextPage() {
+
+        int nextPosition = viewPager.getCurrentItem() + 1;
+
+        if (presenter.shouldShowNextPage(viewPager.getCurrentItem(), adapter.getCount())) {
+            viewPager.setCurrentItem(nextPosition);
+        }
+    }
+
+    @Override
     public void finishView() {
 
         finish();
@@ -94,7 +104,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     @OnPageChange(value = R.id.pager, callback = OnPageChange.Callback.PAGE_SCROLL_STATE_CHANGED)
     void onPageScrollStateChanged(int state) {
 
-        if (isLastPage(state)) {
+        if (presenter.isLastPage(state, adapter.getCount(), viewPager.getCurrentItem())) {
             presenter.getMoreSimilarMovies();
         }
     }
@@ -103,12 +113,5 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
         adapter = new SwipePagerAdapter(getSupportFragmentManager(), movie);
         viewPager.setAdapter(adapter);
-    }
-
-    private boolean isLastPage(int state) {
-
-        int lastIdx = adapter.getCount() - 1;
-        int curItem = viewPager.getCurrentItem();
-        return curItem == lastIdx && state == 1;
     }
 }
