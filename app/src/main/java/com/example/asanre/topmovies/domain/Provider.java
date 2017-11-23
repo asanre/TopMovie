@@ -13,7 +13,8 @@ import java.util.List;
 
 public class Provider {
 
-    public static void getTopMovies(final ServiceCallback<List<IMovie>> callback) {
+    public static void getTopMovies(final ServiceCallback<List<IMovie>> callback,
+                                    MovieParams params) {
 
         MovieRepository.getInstance().getMovies(new ServiceCallback<MovieRepo>() {
 
@@ -28,7 +29,7 @@ public class Provider {
 
                 callback.onError(errorCode, errorMessage);
             }
-        });
+        }, params.getPage());
     }
 
     public static void getSimilarMovies(final ServiceCallback<List<IMovie>> callback,

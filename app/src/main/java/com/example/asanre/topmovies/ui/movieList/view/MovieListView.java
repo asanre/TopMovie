@@ -8,4 +8,6 @@ import java.util.List;
 public interface MovieListView extends BaseView {
 
     void setAdapterData(List<IMovie> movies);
+
+    void notifyFinishLoading();
 }

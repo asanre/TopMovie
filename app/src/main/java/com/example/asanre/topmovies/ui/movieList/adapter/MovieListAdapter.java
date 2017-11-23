@@ -14,6 +14,7 @@ import com.example.asanre.topmovies.R;
 import com.example.asanre.topmovies.domain.model.IMovie;
 import com.example.asanre.topmovies.ui.utils.GlideHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -55,9 +56,13 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         return movies == null ? 0 : movies.size();
     }
 
-    public void setMovies(@NonNull final List<IMovie> movies) {
+    public void addAll(@NonNull final List<IMovie> newMovies) {
 
-        this.movies = movies;
+        if (movies == null) {
+            movies = new ArrayList<>();
+        }
+
+        this.movies.addAll(newMovies);
         notifyDataSetChanged();
     }
 

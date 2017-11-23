@@ -2,6 +2,7 @@ package com.example.asanre.topmovies.ui.movieList.view;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -22,10 +23,11 @@ public class MovieListFragment extends BaseFragment
     @BindView(R.id.rlv_movies)
     RecyclerView recyclerView;
     @BindView(R.id.pb_loading)
-    ProgressBar loading;
+    ProgressBar progressBar;
 
     private MovieListPresenter presenter;
     private MovieListAdapter adapter;
+    private boolean isLoading = false;
 
     @Override
     protected int getFragmentLayout() {
@@ -40,18 +42,20 @@ public class MovieListFragment extends BaseFragment
 
         setupRecycler(adapter);
         presenter = new MovieListPresenter(this);
+        presenter.init();
+        setRecyclerScrollListener();
     }
 
     @Override
     public void showLoading() {
 
-        loading.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoading() {
 
-        loading.setVisibility(View.GONE);
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -63,7 +67,13 @@ public class MovieListFragment extends BaseFragment
     @Override
     public void setAdapterData(List<IMovie> movies) {
 
-        adapter.setMovies(movies);
+        adapter.addAll(movies);
+    }
+
+    @Override
+    public void notifyFinishLoading() {
+
+        isLoading = false;
     }
 
     private void startMovieDetailIntent(IMovie movie) {
@@ -78,5 +88,26 @@ public class MovieListFragment extends BaseFragment
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.hasFixedSize();
         recyclerView.setAdapter(adapter);
+    }
+
+    private void setRecyclerScrollListener() {
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+
+                super.onScrolled(recyclerView, dx, dy);
+                if (isLoading) {
+                    return;
+                }
+
+                if (presenter.pageEndlessDetect(recyclerView)) {
+                    isLoading = true;
+                    Log.d("", "");
+                    presenter.fetchMoreMovies();
+                }
+            }
+        });
     }
 }
