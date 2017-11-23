@@ -38,27 +38,39 @@ public class MovieRepository {
 
     public void getMovies(final ServiceCallback<MovieRepo> callback, int page) {
 
-        executors.networkIO()
-                .execute(() -> apiManager.getTopMovies(new ServiceCallback<MovieRepo>() {
+        executors.diskIO().execute(() -> {
 
-                    @Override
-                    public void onServiceResult(final MovieRepo response) {
-
-                        saveMovies(response);
-                        callback.onServiceResult(response);
-                    }
-
-                    @Override
-                    public void onError(int errorCode, String errorMessage) {
-
-                        callback.onError(errorCode, errorMessage);
-                    }
-                }, page));
+            MovieEntity[] movies = movieDao.getMoviesByPage(page);
+            if (movies.length == 0) {
+                fetchMovies(callback, page);
+            } else {
+                callback.onServiceResult(new MovieRepo(movies));
+            }
+        });
     }
 
     public void getSimilarMovies(ServiceCallback<MovieRepo> callback, int movieId, int page) {
 
         executors.networkIO().execute(() -> apiManager.getSimilarMovies(callback, movieId, page));
+    }
+
+    private void fetchMovies(ServiceCallback<MovieRepo> callback, int page) {
+
+        executors.networkIO().execute(() -> apiManager.getTopMovies(new ServiceCallback<MovieRepo>() {
+
+            @Override
+            public void onServiceResult(final MovieRepo response) {
+
+                saveMovies(response);
+                callback.onServiceResult(response);
+            }
+
+            @Override
+            public void onError(int errorCode, String errorMessage) {
+
+                callback.onError(errorCode, errorMessage);
+            }
+        }, page));
     }
 
     private void saveMovies(MovieRepo response) {

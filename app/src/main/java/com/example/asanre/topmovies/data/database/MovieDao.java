@@ -7,17 +7,12 @@ import android.arch.persistence.room.Query;
 
 import com.example.asanre.topmovies.data.network.model.MovieEntity;
 
-import java.util.List;
-
 @Dao
 public interface MovieDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void save(MovieEntity... movie);
 
-    @Query("SELECT * FROM movie")
-    List<MovieEntity> getMovies();
-
     @Query("SELECT * FROM movie WHERE page = :page")
-    List<MovieEntity> getMoviesByPage(int page);
+    MovieEntity[] getMoviesByPage(int page);
 }

@@ -2,6 +2,7 @@ package com.example.asanre.topmovies.domain;
 
 import android.content.Context;
 
+import com.example.asanre.topmovies.data.AppExecutors;
 import com.example.asanre.topmovies.data.MovieRepository;
 import com.example.asanre.topmovies.data.network.callbacks.ServiceCallback;
 import com.example.asanre.topmovies.data.network.model.MovieEntity;
@@ -10,12 +11,13 @@ import com.example.asanre.topmovies.domain.model.IMovie;
 import com.example.asanre.topmovies.domain.model.Movie;
 import com.example.asanre.topmovies.domain.useCase.MovieParams;
 
+import org.modelmapper.ModelMapper;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Provider {
 
-    // TODO: 23/11/17 i dont like this way
     private static MovieRepository movieRepository;
 
     public static void init(Context context) {
@@ -31,13 +33,19 @@ public class Provider {
             @Override
             public void onServiceResult(MovieRepo response) {
 
-                callback.onServiceResult(mapEntityToMovie(response.getMovies()));
+                AppExecutors.getInstance()
+                        .mainThread()
+                        .execute(() -> callback.onServiceResult(
+                                mapEntityToMovie(response.getMovies())));
+
             }
 
             @Override
             public void onError(int errorCode, String errorMessage) {
 
-                callback.onError(errorCode, errorMessage);
+                AppExecutors.getInstance()
+                        .mainThread()
+                        .execute(() -> callback.onError(errorCode, errorMessage));
             }
         }, params.getPage());
     }
@@ -63,11 +71,10 @@ public class Provider {
 
     private static List<IMovie> mapEntityToMovie(MovieEntity[] movies) {
 
+        ModelMapper mapper = new ModelMapper();
         List<IMovie> list = new ArrayList<>();
         for (MovieEntity entity : movies) {
-            IMovie movie = new Movie(entity.getId(), entity.getTitle(), entity.getPoster_path(),
-                    entity.getOverview(), entity.getVote_average());
-            list.add(movie);
+            list.add(mapper.map(entity, Movie.class));
         }
 
         return list;

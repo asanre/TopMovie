@@ -50,6 +50,31 @@ public class Movie implements IMovie, Parcelable {
         return vote_average;
     }
 
+    public void setId(int id) {
+
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+
+        this.title = title;
+    }
+
+    public void setPoster_path(String poster_path) {
+
+        this.poster_path = poster_path;
+    }
+
+    public void setOverview(String overview) {
+
+        this.overview = overview;
+    }
+
+    public void setVote_average(double vote_average) {
+
+        this.vote_average = vote_average;
+    }
+
     @Override
     public int describeContents() {
 

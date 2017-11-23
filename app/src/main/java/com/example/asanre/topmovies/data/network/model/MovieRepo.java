@@ -12,6 +12,11 @@ public class MovieRepo {
     @SerializedName("results")
     private MovieEntity[] movies;
 
+    public MovieRepo(MovieEntity[] movies) {
+
+        this.movies = movies;
+    }
+
     public MovieEntity[] getMovies() {
 
         return movies;
@@ -31,4 +36,5 @@ public class MovieRepo {
 
         return totalPages;
     }
+
 }
