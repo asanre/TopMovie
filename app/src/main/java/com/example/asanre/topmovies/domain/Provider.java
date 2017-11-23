@@ -1,5 +1,7 @@
 package com.example.asanre.topmovies.domain;
 
+import android.content.Context;
+
 import com.example.asanre.topmovies.data.MovieRepository;
 import com.example.asanre.topmovies.data.network.callbacks.ServiceCallback;
 import com.example.asanre.topmovies.data.network.model.MovieEntity;
@@ -13,10 +15,18 @@ import java.util.List;
 
 public class Provider {
 
+    // TODO: 23/11/17 i dont like this way
+    private static MovieRepository movieRepository;
+
+    public static void init(Context context) {
+
+        movieRepository = MovieRepository.getInstance(context);
+    }
+
     public static void getTopMovies(final ServiceCallback<List<IMovie>> callback,
                                     MovieParams params) {
 
-        MovieRepository.getInstance().getMovies(new ServiceCallback<MovieRepo>() {
+        movieRepository.getMovies(new ServiceCallback<MovieRepo>() {
 
             @Override
             public void onServiceResult(MovieRepo response) {
@@ -35,7 +45,7 @@ public class Provider {
     public static void getSimilarMovies(final ServiceCallback<List<IMovie>> callback,
                                         MovieParams params) {
 
-        MovieRepository.getInstance().getSimilarMovies(new ServiceCallback<MovieRepo>() {
+        movieRepository.getSimilarMovies(new ServiceCallback<MovieRepo>() {
 
             @Override
             public void onServiceResult(MovieRepo response) {

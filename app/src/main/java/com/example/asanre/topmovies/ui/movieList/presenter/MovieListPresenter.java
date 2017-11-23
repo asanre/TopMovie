@@ -4,6 +4,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.example.asanre.topmovies.data.network.callbacks.ServiceCallback;
+import com.example.asanre.topmovies.domain.Provider;
 import com.example.asanre.topmovies.domain.model.IMovie;
 import com.example.asanre.topmovies.domain.useCase.GetTopMovies;
 import com.example.asanre.topmovies.domain.useCase.MovieParams;
@@ -30,6 +31,7 @@ public class MovieListPresenter extends BasePresenter {
 
     public void init() {
 
+        Provider.init(view.getActivity());
         fetchMovies(currentPage);
     }
 

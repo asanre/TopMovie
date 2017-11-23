@@ -7,7 +7,7 @@ import android.arch.persistence.room.PrimaryKey;
 @Entity(tableName = "movie", indices = {@Index(value = "page")})
 public class MovieEntity {
 
-    @PrimaryKey
+    @PrimaryKey()
     private int id;
     private String title;
     private String poster_path;
@@ -54,5 +54,10 @@ public class MovieEntity {
     public int getPage() {
 
         return page;
+    }
+
+    public void setPage(int page) {
+
+        this.page = page;
     }
 }

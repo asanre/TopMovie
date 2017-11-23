@@ -2,7 +2,6 @@ package com.example.asanre.topmovies.ui.movieList.view;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -104,7 +103,6 @@ public class MovieListFragment extends BaseFragment
 
                 if (presenter.pageEndlessDetect(recyclerView)) {
                     isLoading = true;
-                    Log.d("", "");
                     presenter.fetchMoreMovies();
                 }
             }
