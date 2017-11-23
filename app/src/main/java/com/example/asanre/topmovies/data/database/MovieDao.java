@@ -15,4 +15,7 @@ public interface MovieDao {
 
     @Query("SELECT * FROM movie WHERE page = :page")
     MovieEntity[] getMoviesByPage(int page);
+
+    @Query("delete from movie")
+    void clear();
 }

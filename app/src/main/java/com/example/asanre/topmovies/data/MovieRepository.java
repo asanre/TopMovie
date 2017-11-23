@@ -54,23 +54,30 @@ public class MovieRepository {
         executors.networkIO().execute(() -> apiManager.getSimilarMovies(callback, movieId, page));
     }
 
+    public void fetchOnDemand(ServiceCallback<MovieRepo> callback) {
+
+        clearDB();
+        fetchMovies(callback, defaultPageNumber);
+    }
+
     private void fetchMovies(ServiceCallback<MovieRepo> callback, int page) {
 
-        executors.networkIO().execute(() -> apiManager.getTopMovies(new ServiceCallback<MovieRepo>() {
+        executors.networkIO()
+                .execute(() -> apiManager.getTopMovies(new ServiceCallback<MovieRepo>() {
 
-            @Override
-            public void onServiceResult(final MovieRepo response) {
+                    @Override
+                    public void onServiceResult(final MovieRepo response) {
 
-                saveMovies(response);
-                callback.onServiceResult(response);
-            }
+                        saveMovies(response);
+                        callback.onServiceResult(response);
+                    }
 
-            @Override
-            public void onError(int errorCode, String errorMessage) {
+                    @Override
+                    public void onError(int errorCode, String errorMessage) {
 
-                callback.onError(errorCode, errorMessage);
-            }
-        }, page));
+                        callback.onError(errorCode, errorMessage);
+                    }
+                }, page));
     }
 
     private void saveMovies(MovieRepo response) {
@@ -88,5 +95,10 @@ public class MovieRepository {
         }
 
         return repo.getMovies();
+    }
+
+    private void clearDB() {
+
+        executors.diskIO().execute(movieDao::clear);
     }
 }

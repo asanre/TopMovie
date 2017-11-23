@@ -69,6 +69,24 @@ public class Provider {
         }, params.getMovieId(), params.getPage());
     }
 
+    public static void fetchOnDemand(ServiceCallback<List<IMovie>> callback) {
+
+        movieRepository.fetchOnDemand(new ServiceCallback<MovieRepo>() {
+
+            @Override
+            public void onServiceResult(MovieRepo response) {
+
+                callback.onServiceResult(mapEntityToMovie(response.getMovies()));
+            }
+
+            @Override
+            public void onError(int errorCode, String errorMessage) {
+
+                callback.onError(errorCode, errorMessage);
+            }
+        });
+    }
+
     private static List<IMovie> mapEntityToMovie(MovieEntity[] movies) {
 
         ModelMapper mapper = new ModelMapper();
