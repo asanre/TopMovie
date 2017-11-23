@@ -1,28 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <!--todo add text styles-->
+
     <ImageView
         android:id="@+id/iv_hero"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <TextView
-        android:id="@+id/tv_overview"
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_more_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_margin="20dp"
-        android:text="Si volvemos a ejecutar ahora la aplicación veremos cómo al hacer scroll en la lista, la action bar desaparece de la pantalla igual que en el ejemplo anterior, pero que la barra de pestañas queda fija en la parte superior. Esto es un patrón muy común en muchas aplicaciones, por ejemplo la propia tienda de Google "
-        android:textColor="@color/primaryTextColor" />
+        style="@style/Info"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        app:fabSize="mini" />
 
-    <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/tv_overview"
-        android:layout_centerHorizontal="true"
-        android:text="Nice movies"
-        android:textColor="@color/primaryTextColor" />
+    <RelativeLayout
+        android:id="@+id/rl_more_details"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent_black_percent_80"
+        android:padding="20dp"
+        android:visibility="invisible"
+        tools:visibility="visible">
+
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/TextStyle.H1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/tv_overview"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            tools:text="nice Title yeah" />
+
+        <TextView
+            android:id="@+id/tv_overview"
+            style="@style/TextStyle.H4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            tools:text="Most callers should avoid supplying their own format strings to this class' format methods and rely on the correctly localized ones supplied by the system. This class'factory methods return appropriately-localized " />
+
+    </RelativeLayout>
 </RelativeLayout>

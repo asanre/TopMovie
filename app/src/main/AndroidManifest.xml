@@ -24,7 +24,7 @@
         <activity
             android:name=".ui.moviedetail.controller.MovieDetailActivity"
             android:label="@string/movie_detail_label"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/NoActionBar" />
     </application>
 
 </manifest>

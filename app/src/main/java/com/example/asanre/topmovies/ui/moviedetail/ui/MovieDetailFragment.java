@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -16,9 +17,12 @@ import com.example.asanre.topmovies.ui.base.BaseFragment;
 import com.example.asanre.topmovies.ui.utils.GlideHelper;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class MovieDetailFragment extends BaseFragment {
 
+    @BindView(R.id.rl_more_details)
+    RelativeLayout rlMoreDetails;
     @BindView(R.id.tv_title)
     TextView tvTitle;
     @BindView(R.id.tv_overview)
@@ -66,5 +70,12 @@ public class MovieDetailFragment extends BaseFragment {
                         .placeholder(R.drawable.ic_image_holder)
                         .centerCrop())
                 .into(imageView);
+    }
+
+    @OnClick(R.id.fab_more_info)
+    void onFabClicked() {
+
+        int visibility = rlMoreDetails.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE;
+        rlMoreDetails.setVisibility(visibility);
     }
 }
