@@ -33,5 +33,6 @@ ext {
     butterknife = '8.7.0'
     glideVersion = '4.3.1'
     supportVersion = '26.1.0'
+    archVersion = "1.0.0"
     modelmapperVersion = '1.1.0'
 }
