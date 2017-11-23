@@ -66,6 +66,12 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         notifyDataSetChanged();
     }
 
+    public void refreshList(List<IMovie> movies) {
+
+        this.movies = movies;
+        notifyDataSetChanged();
+    }
+
     private void bindViews(ViewHolder holder, IMovie currentMovie) {
 
         setImage(holder.image, context, GlideHelper.getListImageUrl(currentMovie.getImageUrl()));
@@ -82,14 +88,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
     private void setItemClickedListener(View view, final IMovie movie) {
 
-        view.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-
-                listener.onItemClick(movie);
-            }
-        });
+        view.setOnClickListener(view1 -> listener.onItemClick(movie));
     }
 
     /**

@@ -1,7 +1,10 @@
 package com.example.asanre.topmovies.ui.movieList.view;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -32,6 +35,13 @@ public class MovieListFragment extends BaseFragment
     protected int getFragmentLayout() {
 
         return R.layout.fragment_movie_list;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -73,6 +83,26 @@ public class MovieListFragment extends BaseFragment
     public void notifyFinishLoading() {
 
         isLoading = false;
+    }
+
+    @Override
+    public void refreshData(List<IMovie> movies) {
+
+        adapter.refreshList(movies);
+        recyclerView.smoothScrollToPosition(0);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int itemId = item.getItemId();
+        switch (itemId) {
+            case R.id.reload:
+                presenter.fetchOnDemand();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void startMovieDetailIntent(IMovie movie) {

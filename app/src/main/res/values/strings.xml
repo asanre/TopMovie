@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">TopMovies</string>
     <string name="movie_detail_label">Details</string>
+    <string name="refresh">Refresh</string>
 </resources>

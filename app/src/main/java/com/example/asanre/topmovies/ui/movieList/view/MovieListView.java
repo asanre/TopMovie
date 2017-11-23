@@ -14,4 +14,6 @@ public interface MovieListView extends BaseView {
     void notifyFinishLoading();
 
     Context getActivity();
+
+    void refreshData(List<IMovie> movies);
 }

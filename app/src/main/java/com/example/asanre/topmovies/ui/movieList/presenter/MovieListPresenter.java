@@ -8,6 +8,7 @@ import com.example.asanre.topmovies.domain.Provider;
 import com.example.asanre.topmovies.domain.model.IMovie;
 import com.example.asanre.topmovies.domain.useCase.GetTopMovies;
 import com.example.asanre.topmovies.domain.useCase.MovieParams;
+import com.example.asanre.topmovies.domain.useCase.RefreshData;
 import com.example.asanre.topmovies.ui.base.BasePresenter;
 import com.example.asanre.topmovies.ui.base.BaseView;
 import com.example.asanre.topmovies.ui.movieList.view.MovieListView;
@@ -18,6 +19,7 @@ public class MovieListPresenter extends BasePresenter {
 
     private final MovieListView view;
     private GetTopMovies getTopMovies;
+    private RefreshData refreshData;
     private int currentPage;
     private boolean isLoadingOnDemand;
 
@@ -25,6 +27,7 @@ public class MovieListPresenter extends BasePresenter {
 
         this.view = view;
         getTopMovies = new GetTopMovies();
+        refreshData = new RefreshData();
         currentPage = 1;
         isLoadingOnDemand = false;
     }
@@ -83,5 +86,24 @@ public class MovieListPresenter extends BasePresenter {
                 // TODO: 22/11/17 show error
             }
         }, new MovieParams(page));
+    }
+
+    public void fetchOnDemand() {
+
+        refreshData.execute(new ServiceCallback<List<IMovie>>() {
+
+            @Override
+            public void onServiceResult(List<IMovie> movies) {
+
+                if (isViewAlive()) {
+                    view.refreshData(movies);
+                }
+            }
+
+            @Override
+            public void onError(int errorCode, String errorMessage) {
+
+            }
+        });
     }
 }
