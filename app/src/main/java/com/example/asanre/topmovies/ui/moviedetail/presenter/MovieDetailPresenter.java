@@ -36,6 +36,9 @@ public class MovieDetailPresenter extends BasePresenter {
         fetchSimilarMovies(new MovieParams(movie.getId(), currentPage));
     }
 
+    /**
+     * fetch similar movies given a movie id
+     */
     public void getMoreSimilarMovies() {
 
         fetchSimilarMovies(new MovieParams(movie.getId(), ++currentPage));
@@ -53,45 +56,66 @@ public class MovieDetailPresenter extends BasePresenter {
             public void onServiceResult(List<IMovie> movies) {
 
                 if (isViewAlive()) {
-                    if (!movies.isEmpty()) {
-                        view.setAdapterData(movies);
-                        if (isLoadDataOnDemand()) {
-                            view.goNextPage();
-                        }
-                    }
-
-                    if (isLoadDataOnDemand()) {
-                        view.hideLoading();
-                    }
+                    onGetSimilarMoviesSuccess(movies);
                 }
             }
 
             @Override
             public void onError(int errorCode, String errorMessage) {
 
-                if (isViewAlive()) {
-                    view.hideLoading();
-                    view.showErrorMessage(errorMessage);
-                }
+                onGetSimilarMoviesError(errorMessage);
             }
         }, params);
     }
 
+    /**
+     * @param state       pager state
+     * @param count       adapter size
+     * @param currentItem current item display
+     * @return true if it is the last page
+     */
     public boolean isLastPage(int state, int count, int currentItem) {
 
         int lastIdx = count - 1;
         return currentItem == lastIdx && state == 1;
     }
 
-    private boolean isLoadDataOnDemand() {
-
-        return currentPage > 1;
-    }
-
+    /**
+     * @param currentItem item display index with base 0
+     * @param count       adapter size
+     * @return
+     */
     public boolean shouldShowNextPage(int currentItem, int count) {
 
         int nextPosition = currentItem + 1;
         int lastIdx = count - 1;
         return nextPosition < lastIdx;
+    }
+
+    void onGetSimilarMoviesError(String errorMessage) {
+
+        if (isViewAlive()) {
+            view.hideLoading();
+            view.showErrorMessage(errorMessage);
+        }
+    }
+
+    void onGetSimilarMoviesSuccess(List<IMovie> movies) {
+
+        if (!movies.isEmpty()) {
+            view.setAdapterData(movies);
+            if (isLoadDataOnDemand()) {
+                view.goNextPage();
+            }
+        }
+
+        if (isLoadDataOnDemand()) {
+            view.hideLoading();
+        }
+    }
+
+    private boolean isLoadDataOnDemand() {
+
+        return currentPage > 1;
     }
 }

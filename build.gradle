@@ -30,7 +30,7 @@ ext {
     stethoVersion = '1.5.0'
     gsonVersion = '2.8.1'
     retrofitVersion = '2.3.0'
-    butterknife = '8.7.0'
+    butterknife = '8.8.1'
     glideVersion = '4.3.1'
     supportVersion = '26.1.0'
     archVersion = "1.0.0"

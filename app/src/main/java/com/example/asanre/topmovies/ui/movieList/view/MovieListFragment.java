@@ -16,6 +16,7 @@ import com.example.asanre.topmovies.ui.base.BaseFragment;
 import com.example.asanre.topmovies.ui.movieList.adapter.MovieListAdapter;
 import com.example.asanre.topmovies.ui.movieList.presenter.MovieListPresenter;
 import com.example.asanre.topmovies.ui.moviedetail.controller.MovieDetailActivity;
+import com.example.asanre.topmovies.ui.utils.RecyclerUtils;
 
 import java.util.List;
 
@@ -142,7 +143,7 @@ public class MovieListFragment extends BaseFragment
                     return;
                 }
 
-                if (presenter.pageEndlessDetect(recyclerView)) {
+                if (RecyclerUtils.pageEndlessDetect(recyclerView)) {
                     isLoading = true;
                     presenter.fetchMoreMovies();
                 }

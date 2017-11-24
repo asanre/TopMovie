@@ -1,8 +1,5 @@
 package com.example.asanre.topmovies.ui.movieList.presenter;
 
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-
 import com.example.asanre.topmovies.data.network.callbacks.ServiceCallback;
 import com.example.asanre.topmovies.domain.model.IMovie;
 import com.example.asanre.topmovies.domain.useCase.GetTopMovies;
@@ -31,7 +28,11 @@ public class MovieListPresenter extends BasePresenter {
         isLoadingOnDemand = false;
     }
 
+    /**
+     * fetch top movies page 1
+     */
     public void init() {
+
         fetchMovies(currentPage);
     }
 
@@ -41,23 +42,39 @@ public class MovieListPresenter extends BasePresenter {
         return view;
     }
 
+    /**
+     * fetch more movies increasing page
+     * number according to pagination
+     */
     public void fetchMoreMovies() {
 
         isLoadingOnDemand = true;
         fetchMovies(++currentPage);
     }
 
-    public boolean pageEndlessDetect(RecyclerView recyclerView) {
+    /**
+     * refresh list data
+     */
+    public void fetchOnDemand() {
 
-        if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
-            LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-            int visibleItemCount = layoutManager.getChildCount();
-            int totalItemCount = layoutManager.getItemCount();
-            int pastVisibleItems = layoutManager.findFirstVisibleItemPosition();
-            return pastVisibleItems + visibleItemCount >= totalItemCount - visibleItemCount;
-        } else {
-            return false;
-        }
+        refreshData.execute(new ServiceCallback<List<IMovie>>() {
+
+            @Override
+            public void onServiceResult(List<IMovie> movies) {
+
+                if (isViewAlive()) {
+                    fetchOnDemandResult(movies);
+                }
+            }
+
+            @Override
+            public void onError(int errorCode, String errorMessage) {
+
+                if (isViewAlive()) {
+                    handlerError(errorMessage);
+                }
+            }
+        });
     }
 
     private void fetchMovies(int page) {
@@ -69,12 +86,7 @@ public class MovieListPresenter extends BasePresenter {
             public void onServiceResult(List<IMovie> response) {
 
                 if (isViewAlive()) {
-                    view.setAdapterData(response);
-                    view.hideLoading();
-
-                    if (isLoadingOnDemand) {
-                        view.notifyFinishLoading();
-                    }
+                    onGetTopMovieSuccess(response);
                 }
             }
 
@@ -82,29 +94,30 @@ public class MovieListPresenter extends BasePresenter {
             public void onError(int errorCode, String errorMessage) {
 
                 if (isViewAlive()) {
-                    view.hideLoading();
-                    view.showErrorMessage(errorMessage);
+                    handlerError(errorMessage);
                 }
             }
         }, new MovieParams(page));
     }
 
-    public void fetchOnDemand() {
+    void fetchOnDemandResult(List<IMovie> movies) {
 
-        refreshData.execute(new ServiceCallback<List<IMovie>>() {
+        view.refreshData(movies);
+    }
 
-            @Override
-            public void onServiceResult(List<IMovie> movies) {
+    void onGetTopMovieSuccess(List<IMovie> response) {
 
-                if (isViewAlive()) {
-                    view.refreshData(movies);
-                }
-            }
+        view.setAdapterData(response);
+        view.hideLoading();
 
-            @Override
-            public void onError(int errorCode, String errorMessage) {
+        if (isLoadingOnDemand) {
+            view.notifyFinishLoading();
+        }
+    }
 
-            }
-        });
+    void handlerError(String errorMessage) {
+
+        view.hideLoading();
+        view.showErrorMessage(errorMessage);
     }
 }
