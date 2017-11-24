@@ -1,7 +1,5 @@
 package com.example.asanre.topmovies.ui.moviedetail.presenter;
 
-import android.util.Log;
-
 import com.example.asanre.topmovies.data.network.callbacks.ServiceCallback;
 import com.example.asanre.topmovies.domain.model.IMovie;
 import com.example.asanre.topmovies.domain.useCase.GetSimilarMovies;
@@ -55,10 +53,7 @@ public class MovieDetailPresenter extends BasePresenter {
             public void onServiceResult(List<IMovie> movies) {
 
                 if (isViewAlive()) {
-                    if (movies.isEmpty() && isLoadDataOnDemand()) {
-                        // TODO: 22/11/17 show msg telling its the end and close or just do nothing
-                        //                        view.finishView();
-                    } else {
+                    if (!movies.isEmpty()) {
                         view.setAdapterData(movies);
                         if (isLoadDataOnDemand()) {
                             view.goNextPage();
@@ -74,7 +69,10 @@ public class MovieDetailPresenter extends BasePresenter {
             @Override
             public void onError(int errorCode, String errorMessage) {
 
-                Log.d("", "");
+                if (isViewAlive()) {
+                    view.hideLoading();
+                    view.showErrorMessage(errorMessage);
+                }
             }
         }, params);
     }

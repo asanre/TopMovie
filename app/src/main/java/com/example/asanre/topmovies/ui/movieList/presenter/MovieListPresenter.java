@@ -83,7 +83,11 @@ public class MovieListPresenter extends BasePresenter {
 
             @Override
             public void onError(int errorCode, String errorMessage) {
-                // TODO: 22/11/17 show error
+
+                if (isViewAlive()) {
+                    view.hideLoading();
+                    view.showErrorMessage(errorMessage);
+                }
             }
         }, new MovieParams(page));
     }

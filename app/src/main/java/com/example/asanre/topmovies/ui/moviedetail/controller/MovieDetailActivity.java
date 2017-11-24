@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.asanre.topmovies.R;
 import com.example.asanre.topmovies.domain.model.IMovie;
@@ -96,9 +97,9 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     }
 
     @Override
-    public void finishView() {
+    public void showErrorMessage(String errorMessage) {
 
-        finish();
+        Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
     }
 
     @OnPageChange(value = R.id.pager, callback = OnPageChange.Callback.PAGE_SCROLL_STATE_CHANGED)

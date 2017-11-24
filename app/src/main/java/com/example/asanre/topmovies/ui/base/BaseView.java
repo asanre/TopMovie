@@ -8,5 +8,5 @@ public interface BaseView {
 
     boolean isViewAlive();
 
-    void finishView();
+    void showErrorMessage(String errorMessage);
 }

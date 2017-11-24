@@ -2,6 +2,8 @@ package com.example.asanre.topmovies.ui.movieList.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
@@ -22,6 +24,8 @@ import butterknife.BindView;
 public class MovieListFragment extends BaseFragment
         implements MovieListView, MovieListAdapter.AdapterOnItemClickListener {
 
+    @BindView(R.id.cl_container)
+    CoordinatorLayout clContainer;
     @BindView(R.id.rlv_movies)
     RecyclerView recyclerView;
     @BindView(R.id.pb_loading)
@@ -65,6 +69,13 @@ public class MovieListFragment extends BaseFragment
     public void hideLoading() {
 
         progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showErrorMessage(String errorMessage) {
+
+        Snackbar.make(clContainer, errorMessage, Snackbar.LENGTH_LONG).show();
+
     }
 
     @Override

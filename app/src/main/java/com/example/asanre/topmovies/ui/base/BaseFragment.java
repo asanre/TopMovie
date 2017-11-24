@@ -32,7 +32,7 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     }
 
     @Override
-    public void finishView() {
+    public void showErrorMessage(String errorMessage) {
 
     }
 
