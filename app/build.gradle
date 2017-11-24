@@ -1,8 +1,6 @@
 apply plugin: 'com.android.application'
 
 android {
-    Properties properties = new Properties()
-    properties.load(project.rootProject.file("local.properties").newDataInputStream())
 
     compileSdkVersion 26
     defaultConfig {
@@ -12,8 +10,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
-        buildConfigField("String", "API_KEY", properties.getProperty("API_KEY"))
+//        TODO  put your api key here
+        buildConfigField("String", "API_KEY", "\"YOUR_API_KEY\"")
     }
 
     buildTypes {
