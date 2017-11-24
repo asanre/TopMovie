@@ -74,7 +74,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
     private void bindViews(ViewHolder holder, IMovie currentMovie) {
 
-        setImage(holder.image, context, GlideHelper.getListImageUrl(currentMovie.getImageUrl()));
+        setImage(holder.image, context, currentMovie.getImageUrl());
 
         holder.tvTitle.setText(currentMovie.getTitle());
         String voteAvg = String.valueOf(currentMovie.getRating());

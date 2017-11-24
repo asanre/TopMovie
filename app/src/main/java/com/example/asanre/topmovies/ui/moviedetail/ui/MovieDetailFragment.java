@@ -9,8 +9,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.example.asanre.topmovies.R;
 import com.example.asanre.topmovies.domain.model.IMovie;
 import com.example.asanre.topmovies.ui.base.BaseFragment;
@@ -64,12 +62,7 @@ public class MovieDetailFragment extends BaseFragment {
 
     private void setImage(ImageView imageView, String path) {
 
-        Glide.with(getActivity())
-                .load(GlideHelper.getHeroImage(path))
-                .apply(new RequestOptions().error(R.drawable.ic_image_error)
-                        .placeholder(R.drawable.ic_image_holder)
-                        .centerCrop())
-                .into(imageView);
+        GlideHelper.getHeroImage(imageView, getActivity(), path);
     }
 
     @OnClick(R.id.fab_more_info)
