@@ -2,6 +2,7 @@ package com.example.asanre.topmovies;
 
 import android.app.Application;
 
+import com.example.asanre.topmovies.domain.Provider;
 import com.facebook.stetho.Stetho;
 
 public class TopMovieApp extends Application {
@@ -12,6 +13,8 @@ public class TopMovieApp extends Application {
         super.onCreate();
 
         initializeStetho();
+        Provider.init(this);
+
     }
 
     private void initializeStetho() {
