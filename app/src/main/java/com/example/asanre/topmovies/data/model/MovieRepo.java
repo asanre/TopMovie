@@ -1,4 +1,4 @@
-package com.example.asanre.topmovies.data.network.model;
+package com.example.asanre.topmovies.data.model;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -1,9 +1,9 @@
 package com.example.asanre.topmovies.data.network;
 
 import com.example.asanre.topmovies.BuildConfig;
+import com.example.asanre.topmovies.data.model.MovieRepo;
 import com.example.asanre.topmovies.data.network.callbacks.ServiceCallback;
 import com.example.asanre.topmovies.data.network.callbacks.ServiceResponseHandler;
-import com.example.asanre.topmovies.data.network.model.MovieRepo;
 import com.example.asanre.topmovies.data.network.restclient.RestClient;
 
 import java.util.HashMap;

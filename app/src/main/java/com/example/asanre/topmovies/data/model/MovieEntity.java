@@ -1,4 +1,4 @@
-package com.example.asanre.topmovies.data.network.model;
+package com.example.asanre.topmovies.data.model;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Index;

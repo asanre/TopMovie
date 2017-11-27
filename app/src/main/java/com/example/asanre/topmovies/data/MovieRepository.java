@@ -4,10 +4,10 @@ import android.content.Context;
 
 import com.example.asanre.topmovies.data.database.MovieDB;
 import com.example.asanre.topmovies.data.database.MovieDao;
+import com.example.asanre.topmovies.data.model.MovieEntity;
+import com.example.asanre.topmovies.data.model.MovieRepo;
 import com.example.asanre.topmovies.data.network.ApiManager;
 import com.example.asanre.topmovies.data.network.callbacks.ServiceCallback;
-import com.example.asanre.topmovies.data.network.model.MovieEntity;
-import com.example.asanre.topmovies.data.network.model.MovieRepo;
 
 public class MovieRepository {
 

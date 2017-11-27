@@ -1,6 +1,6 @@
 package com.example.asanre.topmovies.data.network.restclient;
 
-import com.example.asanre.topmovies.data.network.model.MovieRepo;
+import com.example.asanre.topmovies.data.model.MovieRepo;
 
 import java.util.Map;
 

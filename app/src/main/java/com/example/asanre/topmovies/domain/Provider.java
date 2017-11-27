@@ -4,9 +4,9 @@ import android.content.Context;
 
 import com.example.asanre.topmovies.data.AppExecutors;
 import com.example.asanre.topmovies.data.MovieRepository;
+import com.example.asanre.topmovies.data.model.MovieEntity;
+import com.example.asanre.topmovies.data.model.MovieRepo;
 import com.example.asanre.topmovies.data.network.callbacks.ServiceCallback;
-import com.example.asanre.topmovies.data.network.model.MovieEntity;
-import com.example.asanre.topmovies.data.network.model.MovieRepo;
 import com.example.asanre.topmovies.domain.model.IMovie;
 import com.example.asanre.topmovies.domain.model.Movie;
 import com.example.asanre.topmovies.domain.useCase.MovieParams;

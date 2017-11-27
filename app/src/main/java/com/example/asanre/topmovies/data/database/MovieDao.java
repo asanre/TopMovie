@@ -5,7 +5,7 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
-import com.example.asanre.topmovies.data.network.model.MovieEntity;
+import com.example.asanre.topmovies.data.model.MovieEntity;
 
 @Dao
 public interface MovieDao {

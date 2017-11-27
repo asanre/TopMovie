@@ -5,7 +5,7 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
-import com.example.asanre.topmovies.data.network.model.MovieEntity;
+import com.example.asanre.topmovies.data.model.MovieEntity;
 
 @Database(entities = {MovieEntity.class}, version = 1)
 public abstract class MovieDB extends RoomDatabase {
