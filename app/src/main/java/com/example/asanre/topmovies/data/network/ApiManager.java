@@ -2,12 +2,12 @@ package com.example.asanre.topmovies.data.network;
 
 import com.example.asanre.topmovies.BuildConfig;
 import com.example.asanre.topmovies.data.model.MovieRepo;
-import com.example.asanre.topmovies.data.network.callbacks.ServiceCallback;
-import com.example.asanre.topmovies.data.network.callbacks.ServiceResponseHandler;
 import com.example.asanre.topmovies.data.network.restclient.RestClient;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import io.reactivex.Single;
 
 public class ApiManager {
 
@@ -25,18 +25,14 @@ public class ApiManager {
         return sInstance;
     }
 
-    public void getTopMovies(ServiceCallback<MovieRepo> callback, int page) {
+    public Single<MovieRepo> getTopMovies(int page) {
 
-        RestClient.getClient()
-                .getTopRateMovies(getQueriesParams(page))
-                .enqueue(new ServiceResponseHandler<>(callback));
+        return RestClient.getClient().getTopRateMovies(getQueriesParams(page));
     }
 
-    public void getSimilarMovies(ServiceCallback<MovieRepo> callback, int movieId, int page) {
+    public Single<MovieRepo> getSimilarMovies(int movieId, int page) {
 
-        RestClient.getClient()
-                .getRelatedMovies(movieId, getQueriesParams(page))
-                .enqueue(new ServiceResponseHandler<>(callback));
+        return RestClient.getClient().getRelatedMovies(movieId, getQueriesParams(page));
 
     }
 
