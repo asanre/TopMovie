@@ -2,7 +2,6 @@ package com.example.asanre.topmovies.domain;
 
 import android.content.Context;
 
-import com.example.asanre.topmovies.data.AppExecutors;
 import com.example.asanre.topmovies.data.MovieRepository;
 import com.example.asanre.topmovies.data.model.MovieEntity;
 import com.example.asanre.topmovies.data.model.MovieRepo;
@@ -16,6 +15,8 @@ import org.modelmapper.ModelMapper;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Single;
+
 public class Provider {
 
     private static MovieRepository movieRepository;
@@ -25,29 +26,10 @@ public class Provider {
         movieRepository = MovieRepository.getInstance(context);
     }
 
-    public static void getTopMovies(final ServiceCallback<List<IMovie>> callback,
-                                    MovieParams params) {
+    public static Single<List<IMovie>> getTopMovies(MovieParams params) {
 
-        movieRepository.getMovies(new ServiceCallback<MovieRepo>() {
-
-            @Override
-            public void onServiceResult(MovieRepo response) {
-
-                AppExecutors.getInstance()
-                        .mainThread()
-                        .execute(() -> callback.onServiceResult(
-                                mapEntityToMovie(response.getMovies())));
-
-            }
-
-            @Override
-            public void onError(int errorCode, String errorMessage) {
-
-                AppExecutors.getInstance()
-                        .mainThread()
-                        .execute(() -> callback.onError(errorCode, errorMessage));
-            }
-        }, params.getPage());
+        return movieRepository.getMovies(params.getPage())
+                .map(movieEntities -> mapEntityToMovie(movieEntities));
     }
 
     public static void getSimilarMovies(final ServiceCallback<List<IMovie>> callback,
@@ -58,7 +40,7 @@ public class Provider {
             @Override
             public void onServiceResult(MovieRepo response) {
 
-                callback.onServiceResult(mapEntityToMovie(response.getMovies()));
+                //                callback.onServiceResult(mapEntityToMovie(response.getMovies()));
             }
 
             @Override
@@ -76,7 +58,7 @@ public class Provider {
             @Override
             public void onServiceResult(MovieRepo response) {
 
-                callback.onServiceResult(mapEntityToMovie(response.getMovies()));
+                //                callback.onServiceResult(mapEntityToMovie(response.getMovies()));
             }
 
             @Override
@@ -87,7 +69,7 @@ public class Provider {
         });
     }
 
-    private static List<IMovie> mapEntityToMovie(MovieEntity[] movies) {
+    private static List<IMovie> mapEntityToMovie(List<MovieEntity> movies) {
 
         ModelMapper mapper = new ModelMapper();
         List<IMovie> list = new ArrayList<>();

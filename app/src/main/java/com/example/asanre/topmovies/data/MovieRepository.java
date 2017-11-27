@@ -9,6 +9,11 @@ import com.example.asanre.topmovies.data.model.MovieRepo;
 import com.example.asanre.topmovies.data.network.ApiManager;
 import com.example.asanre.topmovies.data.network.callbacks.ServiceCallback;
 
+import java.util.Arrays;
+import java.util.List;
+
+import io.reactivex.Single;
+
 public class MovieRepository {
 
     private final MovieDao movieDao;
@@ -36,56 +41,43 @@ public class MovieRepository {
         return sInstance;
     }
 
-    public void getMovies(final ServiceCallback<MovieRepo> callback, int page) {
+    public Single<List<MovieEntity>> getMovies(int page) {
 
-        executors.diskIO().execute(() -> {
-
-            MovieEntity[] movies = movieDao.getMoviesByPage(page);
-            if (movies.length == 0) {
-                fetchMovies(callback, page);
-            } else {
-                callback.onServiceResult(new MovieRepo(movies));
-            }
-        });
+        return fetchMovies(page);
+        //       executors.diskIO().execute(() -> {
+        //
+        //            MovieEntity[] movies = movieDao.getMoviesByPage(page);
+        //            if (movies.length == 0) {
+        //                fetchMovies(singleObserver, page);
+        //            } else {
+        //                callback.onServiceResult(new MovieRepo(movies));
+        //            }
+        //        });
     }
 
     public void getSimilarMovies(ServiceCallback<MovieRepo> callback, int movieId, int page) {
 
-        executors.networkIO().execute(() -> apiManager.getSimilarMovies(callback, movieId, page));
+        apiManager.getSimilarMovies(movieId, page);
     }
 
     public void fetchOnDemand(ServiceCallback<MovieRepo> callback) {
 
         clearDB();
-        fetchMovies(callback, defaultPageNumber);
+        //        fetchMovies(callback, defaultPageNumber);
     }
 
-    private void fetchMovies(ServiceCallback<MovieRepo> callback, int page) {
+    private Single<List<MovieEntity>> fetchMovies(int page) {
 
-        executors.networkIO()
-                .execute(() -> apiManager.getTopMovies(new ServiceCallback<MovieRepo>() {
+        return apiManager.getTopMovies(page).map(movieRepo -> {
 
-                    @Override
-                    public void onServiceResult(final MovieRepo response) {
-
-                        saveMovies(response);
-                        callback.onServiceResult(response);
-                    }
-
-                    @Override
-                    public void onError(int errorCode, String errorMessage) {
-
-                        callback.onError(errorCode, errorMessage);
-                    }
-                }, page));
+            saveMovies(movieRepo);
+            return Arrays.asList(movieRepo.getMovies());
+        });
     }
 
     private void saveMovies(MovieRepo response) {
 
-        executors.diskIO().execute(() -> {
-
-            movieDao.save(getMoviesWithPageIndex(response));
-        });
+        movieDao.save(getMoviesWithPageIndex(response));
     }
 
     private MovieEntity[] getMoviesWithPageIndex(MovieRepo repo) {

@@ -8,9 +8,14 @@ import java.util.List;
 
 public class GetSimilarMovies implements UserCase<List<IMovie>, MovieParams> {
 
-    @Override
+
     public void execute(ServiceCallback<List<IMovie>> callback, MovieParams params) {
 
         Provider.getSimilarMovies(callback, params);
+    }
+
+    @Override
+    public void execute(BaseObserver<List<IMovie>> observer, MovieParams params) {
+
     }
 }
