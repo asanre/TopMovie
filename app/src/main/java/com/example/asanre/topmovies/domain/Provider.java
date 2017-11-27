@@ -4,8 +4,6 @@ import android.content.Context;
 
 import com.example.asanre.topmovies.data.MovieRepository;
 import com.example.asanre.topmovies.data.model.MovieEntity;
-import com.example.asanre.topmovies.data.model.MovieRepo;
-import com.example.asanre.topmovies.data.network.callbacks.ServiceCallback;
 import com.example.asanre.topmovies.domain.model.IMovie;
 import com.example.asanre.topmovies.domain.model.Movie;
 import com.example.asanre.topmovies.domain.useCase.MovieParams;
@@ -28,32 +26,22 @@ public class Provider {
 
     public static Single<List<IMovie>> getTopMovies(MovieParams params) {
 
-        return movieRepository.getMovies(params.getPage()).map(Provider::mapEntityToMovie);
+        return map(movieRepository.getMovies(params.getPage()));
     }
 
     public static Single<List<IMovie>> getSimilarMovies(MovieParams params) {
-        //                callback.onServiceResult(mapEntityToMovie(response.getMovies()));
 
-        return movieRepository.getSimilarMovies(params.getMovieId(), params.getPage())
-                .map(Provider::mapEntityToMovie);
+        return map(movieRepository.getSimilarMovies(params.getMovieId(), params.getPage()));
     }
 
-    public static void fetchOnDemand(ServiceCallback<List<IMovie>> callback) {
+    public static Single<List<IMovie>> fetchOnDemand() {
 
-        movieRepository.fetchOnDemand(new ServiceCallback<MovieRepo>() {
+        return map(movieRepository.fetchOnDemand());
+    }
 
-            @Override
-            public void onServiceResult(MovieRepo response) {
+    private static Single<List<IMovie>> map(Single<List<MovieEntity>> source) {
 
-                //                callback.onServiceResult(mapEntityToMovie(response.getMovies()));
-            }
-
-            @Override
-            public void onError(int errorCode, String errorMessage) {
-
-                callback.onError(errorCode, errorMessage);
-            }
-        });
+        return source.map(Provider::mapEntityToMovie);
     }
 
     private static List<IMovie> mapEntityToMovie(List<MovieEntity> movies) {

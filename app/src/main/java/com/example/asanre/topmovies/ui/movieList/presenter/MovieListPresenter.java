@@ -1,6 +1,5 @@
 package com.example.asanre.topmovies.ui.movieList.presenter;
 
-import com.example.asanre.topmovies.data.network.callbacks.ServiceCallback;
 import com.example.asanre.topmovies.domain.model.IMovie;
 import com.example.asanre.topmovies.domain.useCase.BaseObserver;
 import com.example.asanre.topmovies.domain.useCase.GetTopMovies;
@@ -58,10 +57,10 @@ public class MovieListPresenter extends BasePresenter {
      */
     public void fetchOnDemand() {
 
-        refreshData.execute(new ServiceCallback<List<IMovie>>() {
+        refreshData.execute(new BaseObserver<List<IMovie>>() {
 
             @Override
-            public void onServiceResult(List<IMovie> movies) {
+            public void onSuccess(List<IMovie> movies) {
 
                 if (isViewAlive()) {
                     fetchOnDemandResult(movies);
@@ -69,10 +68,10 @@ public class MovieListPresenter extends BasePresenter {
             }
 
             @Override
-            public void onError(int errorCode, String errorMessage) {
+            public void onError(Throwable error) {
 
                 if (isViewAlive()) {
-                    handlerError(errorMessage);
+                    handlerError(error.getMessage());
                 }
             }
         });

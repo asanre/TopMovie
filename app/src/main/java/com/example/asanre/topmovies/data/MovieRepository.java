@@ -7,7 +7,6 @@ import com.example.asanre.topmovies.data.database.MovieDao;
 import com.example.asanre.topmovies.data.model.MovieEntity;
 import com.example.asanre.topmovies.data.model.MovieRepo;
 import com.example.asanre.topmovies.data.network.ApiManager;
-import com.example.asanre.topmovies.data.network.callbacks.ServiceCallback;
 
 import java.util.List;
 
@@ -59,10 +58,10 @@ public class MovieRepository {
         return apiManager.getSimilarMovies(movieId, page).map(MovieRepo::getMovies);
     }
 
-    public void fetchOnDemand(ServiceCallback<MovieRepo> callback) {
+    public Single<List<MovieEntity>> fetchOnDemand() {
 
-        clearDB();
-        //        fetchMovies(callback, defaultPageNumber);
+        //        clearDB();
+        return fetchMovies(defaultPageNumber);
     }
 
     private Single<List<MovieEntity>> fetchMovies(int page) {
