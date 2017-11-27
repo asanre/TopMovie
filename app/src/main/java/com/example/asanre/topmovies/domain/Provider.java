@@ -28,27 +28,14 @@ public class Provider {
 
     public static Single<List<IMovie>> getTopMovies(MovieParams params) {
 
-        return movieRepository.getMovies(params.getPage())
-                .map(movieEntities -> mapEntityToMovie(movieEntities));
+        return movieRepository.getMovies(params.getPage()).map(Provider::mapEntityToMovie);
     }
 
-    public static void getSimilarMovies(final ServiceCallback<List<IMovie>> callback,
-                                        MovieParams params) {
+    public static Single<List<IMovie>> getSimilarMovies(MovieParams params) {
+        //                callback.onServiceResult(mapEntityToMovie(response.getMovies()));
 
-        movieRepository.getSimilarMovies(new ServiceCallback<MovieRepo>() {
-
-            @Override
-            public void onServiceResult(MovieRepo response) {
-
-                //                callback.onServiceResult(mapEntityToMovie(response.getMovies()));
-            }
-
-            @Override
-            public void onError(int errorCode, String errorMessage) {
-
-                callback.onError(errorCode, errorMessage);
-            }
-        }, params.getMovieId(), params.getPage());
+        return movieRepository.getSimilarMovies(params.getMovieId(), params.getPage())
+                .map(Provider::mapEntityToMovie);
     }
 
     public static void fetchOnDemand(ServiceCallback<List<IMovie>> callback) {

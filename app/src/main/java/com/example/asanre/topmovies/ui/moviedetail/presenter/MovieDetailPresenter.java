@@ -1,7 +1,7 @@
 package com.example.asanre.topmovies.ui.moviedetail.presenter;
 
-import com.example.asanre.topmovies.data.network.callbacks.ServiceCallback;
 import com.example.asanre.topmovies.domain.model.IMovie;
+import com.example.asanre.topmovies.domain.useCase.BaseObserver;
 import com.example.asanre.topmovies.domain.useCase.GetSimilarMovies;
 import com.example.asanre.topmovies.domain.useCase.MovieParams;
 import com.example.asanre.topmovies.ui.base.BasePresenter;
@@ -50,10 +50,10 @@ public class MovieDetailPresenter extends BasePresenter {
             view.showLoading();
         }
 
-        getSimilarMovies.execute(new ServiceCallback<List<IMovie>>() {
+        getSimilarMovies.execute(new BaseObserver<List<IMovie>>() {
 
             @Override
-            public void onServiceResult(List<IMovie> movies) {
+            public void onSuccess(List<IMovie> movies) {
 
                 if (isViewAlive()) {
                     onGetSimilarMoviesSuccess(movies);
@@ -61,10 +61,11 @@ public class MovieDetailPresenter extends BasePresenter {
             }
 
             @Override
-            public void onError(int errorCode, String errorMessage) {
+            public void onError(Throwable error) {
 
-                onGetSimilarMoviesError(errorMessage);
+                onGetSimilarMoviesError(error.getMessage());
             }
+
         }, params);
     }
 

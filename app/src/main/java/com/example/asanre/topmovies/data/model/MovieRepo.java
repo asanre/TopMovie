@@ -2,6 +2,8 @@ package com.example.asanre.topmovies.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class MovieRepo {
 
     private int page;
@@ -10,14 +12,14 @@ public class MovieRepo {
     @SerializedName("total_pages")
     private int totalPages;
     @SerializedName("results")
-    private MovieEntity[] movies;
+    private List<MovieEntity> movies;
 
-    public MovieRepo(MovieEntity[] movies) {
+    public MovieRepo(List<MovieEntity> movies) {
 
         this.movies = movies;
     }
 
-    public MovieEntity[] getMovies() {
+    public List<MovieEntity> getMovies() {
 
         return movies;
     }

@@ -9,7 +9,6 @@ import com.example.asanre.topmovies.data.model.MovieRepo;
 import com.example.asanre.topmovies.data.network.ApiManager;
 import com.example.asanre.topmovies.data.network.callbacks.ServiceCallback;
 
-import java.util.Arrays;
 import java.util.List;
 
 import io.reactivex.Single;
@@ -55,9 +54,9 @@ public class MovieRepository {
         //        });
     }
 
-    public void getSimilarMovies(ServiceCallback<MovieRepo> callback, int movieId, int page) {
+    public Single<List<MovieEntity>> getSimilarMovies(int movieId, int page) {
 
-        apiManager.getSimilarMovies(movieId, page);
+        return apiManager.getSimilarMovies(movieId, page).map(MovieRepo::getMovies);
     }
 
     public void fetchOnDemand(ServiceCallback<MovieRepo> callback) {
@@ -70,24 +69,24 @@ public class MovieRepository {
 
         return apiManager.getTopMovies(page).map(movieRepo -> {
 
-            saveMovies(movieRepo);
-            return Arrays.asList(movieRepo.getMovies());
+            //            saveMovies(movieRepo);
+            return movieRepo.getMovies();
         });
     }
 
     private void saveMovies(MovieRepo response) {
 
-        movieDao.save(getMoviesWithPageIndex(response));
+        //        movieDao.save(getMoviesWithPageIndex(response));
     }
 
-    private MovieEntity[] getMoviesWithPageIndex(MovieRepo repo) {
-
-        for (MovieEntity movie : repo.getMovies()) {
-            movie.setPage(repo.getPage());
-        }
-
-        return repo.getMovies();
-    }
+    //    private MovieEntity[] getMoviesWithPageIndex(MovieRepo repo) {
+    //
+    //        for (MovieEntity movie : repo.getMovies()) {
+    //            movie.setPage(repo.getPage());
+    //        }
+    //
+    //        return repo.getMovies();
+    //    }
 
     private void clearDB() {
 
