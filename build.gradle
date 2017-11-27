@@ -33,6 +33,9 @@ ext {
     butterknife = '8.8.1'
     glideVersion = '4.3.1'
     supportVersion = '26.1.0'
-    archVersion = "1.0.0"
+    archVersion = '1.0.0'
     modelmapperVersion = '1.1.0'
+    rxJava = '2.1.7'
+    rxAndroid = '2.0.1'
+    rxAdapter = '2.3.0'
 }
