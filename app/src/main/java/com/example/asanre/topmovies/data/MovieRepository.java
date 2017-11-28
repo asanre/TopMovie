@@ -18,13 +18,11 @@ public class MovieRepository {
     private int defaultPageNumber = 1;
     private static MovieRepository sInstance;
     private ApiManager apiManager;
-    private AppExecutors executors;
 
     private MovieRepository(Context context) {
 
         apiManager = ApiManager.getInstance();
         movieDao = MovieDB.getInstance(context).getMovieDao();
-        executors = AppExecutors.getInstance();
     }
 
     public static MovieRepository getInstance(Context context) {
@@ -39,6 +37,7 @@ public class MovieRepository {
         return sInstance;
     }
 
+    // TODO: 28/11/17 work in progress create data reactive
     public Single<List<MovieEntity>> getMovies(int page) {
 
         return fetchMovies(page);
@@ -89,6 +88,6 @@ public class MovieRepository {
 
     private void clearDB() {
 
-        executors.diskIO().execute(movieDao::clear);
+        movieDao.clear();
     }
 }
