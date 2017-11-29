@@ -7,17 +7,17 @@ public class Movie implements IMovie, Parcelable {
 
     private int id;
     private String title;
-    private String poster_path;
+    private String posterUrl;
     private String overview;
-    private double vote_average;
+    private double rating;
 
-    public Movie(int id, String title, String poster_path, String overview, double vote_average) {
+    public Movie(int id, String title, String posterUrl, String overview, double rating) {
 
         this.id = id;
         this.title = title;
-        this.poster_path = poster_path;
+        this.posterUrl = posterUrl;
         this.overview = overview;
-        this.vote_average = vote_average;
+        this.rating = rating;
     }
 
     @Override
@@ -41,13 +41,13 @@ public class Movie implements IMovie, Parcelable {
     @Override
     public String getImageUrl() {
 
-        return poster_path;
+        return posterUrl;
     }
 
     @Override
     public double getRating() {
 
-        return vote_average;
+        return rating;
     }
 
     public void setId(int id) {
@@ -60,9 +60,9 @@ public class Movie implements IMovie, Parcelable {
         this.title = title;
     }
 
-    public void setPoster_path(String poster_path) {
+    public void setPosterUrl(String posterUrl) {
 
-        this.poster_path = poster_path;
+        this.posterUrl = posterUrl;
     }
 
     public void setOverview(String overview) {
@@ -70,9 +70,9 @@ public class Movie implements IMovie, Parcelable {
         this.overview = overview;
     }
 
-    public void setVote_average(double vote_average) {
+    public void setRating(double rating) {
 
-        this.vote_average = vote_average;
+        this.rating = rating;
     }
 
     @Override
@@ -86,9 +86,9 @@ public class Movie implements IMovie, Parcelable {
 
         dest.writeInt(this.id);
         dest.writeString(this.title);
-        dest.writeString(this.poster_path);
+        dest.writeString(this.posterUrl);
         dest.writeString(this.overview);
-        dest.writeDouble(this.vote_average);
+        dest.writeDouble(this.rating);
     }
 
     public Movie() {
@@ -99,9 +99,9 @@ public class Movie implements IMovie, Parcelable {
 
         this.id = in.readInt();
         this.title = in.readString();
-        this.poster_path = in.readString();
+        this.posterUrl = in.readString();
         this.overview = in.readString();
-        this.vote_average = in.readDouble();
+        this.rating = in.readDouble();
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {

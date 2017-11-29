@@ -4,25 +4,33 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.google.gson.annotations.SerializedName;
+
+/**
+ * due to the dimension of the project this model is used both for the database
+ * and the network response. In a different scenario each domain would have his own model
+ */
 @Entity(tableName = "movie", indices = {@Index(value = "page")})
 public class MovieEntity {
 
     @PrimaryKey()
     private int id;
     private String title;
-    private String poster_path;
+    @SerializedName("poster_path")
+    private String posterUrl;
     private String overview;
-    private double vote_average;
+    @SerializedName("vote_average")
+    private double rating;
     private int page;
 
-    public MovieEntity(int id, String title, String poster_path, String overview,
-                       double vote_average, int page) {
+    public MovieEntity(int id, String title, String posterUrl, String overview, double rating,
+                       int page) {
 
         this.id = id;
         this.title = title;
-        this.poster_path = poster_path;
+        this.posterUrl = posterUrl;
         this.overview = overview;
-        this.vote_average = vote_average;
+        this.rating = rating;
         this.page = page;
     }
 
@@ -46,14 +54,14 @@ public class MovieEntity {
         this.title = title;
     }
 
-    public String getPoster_path() {
+    public String getPosterUrl() {
 
-        return poster_path;
+        return posterUrl;
     }
 
-    public void setPoster_path(String poster_path) {
+    public void setPosterUrl(String posterUrl) {
 
-        this.poster_path = poster_path;
+        this.posterUrl = posterUrl;
     }
 
     public String getOverview() {
@@ -66,14 +74,14 @@ public class MovieEntity {
         this.overview = overview;
     }
 
-    public double getVote_average() {
+    public double getRating() {
 
-        return vote_average;
+        return rating;
     }
 
-    public void setVote_average(double vote_average) {
+    public void setRating(double rating) {
 
-        this.vote_average = vote_average;
+        this.rating = rating;
     }
 
     public int getPage() {
