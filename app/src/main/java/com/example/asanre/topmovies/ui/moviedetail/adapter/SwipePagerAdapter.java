@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.asanre.topmovies.domain.model.IMovie;
-import com.example.asanre.topmovies.ui.moviedetail.ui.MovieDetailFragment;
+import com.example.asanre.topmovies.ui.moviedetail.view.MovieDetailFragment;
 
 import java.util.ArrayList;
 import java.util.List;

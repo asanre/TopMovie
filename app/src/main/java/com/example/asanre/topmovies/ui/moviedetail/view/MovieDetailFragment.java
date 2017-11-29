@@ -1,4 +1,4 @@
-package com.example.asanre.topmovies.ui.moviedetail.ui;
+package com.example.asanre.topmovies.ui.moviedetail.view;
 
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -62,7 +62,7 @@ public class MovieDetailFragment extends BaseFragment {
 
     private void setImage(ImageView imageView, String path) {
 
-        GlideHelper.getHeroImage(imageView, getActivity(), path);
+        GlideHelper.loadHeroImage(imageView, getActivity(), path);
     }
 
     @OnClick(R.id.fab_more_info)

@@ -14,29 +14,43 @@ import com.example.asanre.topmovies.R;
 
 public class GlideHelper {
 
+    // TODO: 30/11/17 implement glide modules
     private static String baseLowUrl;
     private static String baseHighUrl;
 
-    public static void getImageForList(ImageView imageView, Context context, String url) {
+    /**
+     * load image with less quality for a list
+     *
+     * @param imageView
+     * @param context
+     * @param url
+     */
+    public static void loadListImage(ImageView imageView, Context context, String url) {
 
         setBaseUrls(context);
-        Glide.with(context).load(getListImageUrl(url))
-                .apply(new RequestOptions().error(R.drawable.ic_image_error)
+        Glide.with(context)
+                .load(getFormattedLowImageUrl(url))
+                .apply(new RequestOptions().error(R.drawable.ic_image_holder)
                         .placeholder(R.drawable.ic_image_holder)
                         .override(110, 130)
                         .centerCrop())
                 .into(imageView);
     }
 
-    public static void getHeroImage(ImageView imageView, Context context, String url) {
+    /**
+     * load big image with great quality
+     *
+     * @param imageView
+     * @param context
+     * @param url
+     */
+    public static void loadHeroImage(ImageView imageView, Context context, String url) {
 
         setBaseUrls(context);
-        RequestBuilder<Drawable> thumbnail = Glide.with(context)
-                .load(getListImageUrl(url))
+        RequestBuilder<Drawable> thumbnail = Glide.with(context).load(getFormattedLowImageUrl(url))
                 .apply(new RequestOptions().dontAnimate().centerCrop().priority(Priority.HIGH));
 
-        Glide.with(context)
-                .load(getHeroImageUrl(url))
+        Glide.with(context).load(getFormattedBigImageUrl(url))
                 .apply(new RequestOptions().error(R.drawable.ic_image_error)
                         .dontAnimate()
                         .centerCrop())
@@ -69,12 +83,12 @@ public class GlideHelper {
         return false;
     }
 
-    private static String getListImageUrl(String path) {
+    private static String getFormattedLowImageUrl(String path) {
 
         return String.format(baseLowUrl, path);
     }
 
-    private static String getHeroImageUrl(String path) {
+    private static String getFormattedBigImageUrl(String path) {
 
         return String.format(baseHighUrl, path);
     }

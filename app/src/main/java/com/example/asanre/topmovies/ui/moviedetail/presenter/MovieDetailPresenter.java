@@ -62,7 +62,7 @@ public class MovieDetailPresenter extends BasePresenter {
 
             @Override
             public void onError(Throwable error) {
-
+                // TODO: 30/11/17 handler errors message
                 onGetSimilarMoviesError(error.getMessage());
             }
 

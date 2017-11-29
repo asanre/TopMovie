@@ -83,7 +83,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
     private void setImage(ImageView imageView, Context context, String url) {
 
-        GlideHelper.getImageForList(imageView, context, url);
+        GlideHelper.loadListImage(imageView, context, url);
     }
 
     private void setItemClickedListener(View view, final IMovie movie) {
