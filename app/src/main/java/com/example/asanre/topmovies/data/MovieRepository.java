@@ -13,7 +13,7 @@ import java.util.List;
 
 import io.reactivex.Single;
 
-public class MovieRepository {
+public class MovieRepository implements Repository {
 
     private final MovieDao movieDao;
     private final int defaultPageNumber = 1;
@@ -39,11 +39,13 @@ public class MovieRepository {
     }
 
     /**
-     * getMovies retrieve movies from cloud but if there is a problem return movies from DB
+     * getMovies retrieve movies from cloud but if there is a problem
+     * return movies from DB
      *
-     * @param page
-     * @return Single<List<MovieEntity>>
+     * @param page int
+     * @return
      */
+    @Override
     public Single<List<MovieEntity>> getMovies(int page) {
 
         return Single.zip(fetchAndSaveMovies(page).onErrorReturnItem(new ArrayList<>()),
@@ -58,13 +60,7 @@ public class MovieRepository {
 
     }
 
-    /**
-     * return similar movies
-     *
-     * @param movieId
-     * @param page
-     * @return Single<List<MovieEntity>>
-     */
+    @Override
     public Single<List<MovieEntity>> getSimilarMovies(int movieId, int page) {
 
         return apiManager.getSimilarMovies(movieId, page).map(MovieRepo::getMovies);
@@ -74,8 +70,9 @@ public class MovieRepository {
      * this clear the database, fetch from cloud the first page
      * of movies and after emitting save the response
      *
-     * @return Single<List<MovieEntity>>
+     * @return a fresh list of movies
      */
+    @Override
     public Single<List<MovieEntity>> fetchOnDemand() {
 
         return apiManager.getTopMovies(defaultPageNumber).doAfterSuccess(movieRepo -> {

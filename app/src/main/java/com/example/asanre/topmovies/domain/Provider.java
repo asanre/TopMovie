@@ -3,6 +3,7 @@ package com.example.asanre.topmovies.domain;
 import android.content.Context;
 
 import com.example.asanre.topmovies.data.MovieRepository;
+import com.example.asanre.topmovies.data.Repository;
 import com.example.asanre.topmovies.data.model.MovieEntity;
 import com.example.asanre.topmovies.domain.model.IMovie;
 import com.example.asanre.topmovies.domain.model.Movie;
@@ -17,7 +18,7 @@ import io.reactivex.Single;
 
 public class Provider {
 
-    private static MovieRepository movieRepository;
+    private static Repository movieRepository;
 
     public static void init(Context context) {
 
