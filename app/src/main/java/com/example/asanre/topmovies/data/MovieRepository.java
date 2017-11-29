@@ -8,6 +8,7 @@ import com.example.asanre.topmovies.data.model.MovieEntity;
 import com.example.asanre.topmovies.data.model.MovieRepo;
 import com.example.asanre.topmovies.data.network.ApiManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Single;
@@ -15,7 +16,7 @@ import io.reactivex.Single;
 public class MovieRepository {
 
     private final MovieDao movieDao;
-    private int defaultPageNumber = 1;
+    private final int defaultPageNumber = 1;
     private static MovieRepository sInstance;
     private ApiManager apiManager;
 
@@ -37,54 +38,73 @@ public class MovieRepository {
         return sInstance;
     }
 
-    // TODO: 28/11/17 work in progress create data reactive
+    /**
+     * getMovies retrieve movies from cloud but if there is a problem return movies from DB
+     *
+     * @param page
+     * @return Single<List<MovieEntity>>
+     */
     public Single<List<MovieEntity>> getMovies(int page) {
 
-        return fetchMovies(page);
-        //       executors.diskIO().execute(() -> {
-        //
-        //            MovieEntity[] movies = movieDao.getMoviesByPage(page);
-        //            if (movies.length == 0) {
-        //                fetchMovies(singleObserver, page);
-        //            } else {
-        //                callback.onServiceResult(new MovieRepo(movies));
-        //            }
-        //        });
+        return Single.zip(fetchAndSaveMovies(page).onErrorReturnItem(new ArrayList<>()),
+                movieDao.getMoviesByPage(page), (moviesFromCloud, moviesFromDB) -> {
+
+                    if (moviesFromCloud.isEmpty()) {
+                        return moviesFromDB;
+                    }
+
+                    return moviesFromCloud;
+                });
+
     }
 
+    /**
+     * return similar movies
+     *
+     * @param movieId
+     * @param page
+     * @return Single<List<MovieEntity>>
+     */
     public Single<List<MovieEntity>> getSimilarMovies(int movieId, int page) {
 
         return apiManager.getSimilarMovies(movieId, page).map(MovieRepo::getMovies);
     }
 
+    /**
+     * this clear the database, fetch from cloud the first page
+     * of movies and after emitting save the response
+     *
+     * @return Single<List<MovieEntity>>
+     */
     public Single<List<MovieEntity>> fetchOnDemand() {
 
-        //        clearDB();
-        return fetchMovies(defaultPageNumber);
+        return apiManager.getTopMovies(defaultPageNumber).doAfterSuccess(movieRepo -> {
+            clearDB();
+            saveMovies(movieRepo);
+        }).map(MovieRepo::getMovies);
     }
 
-    private Single<List<MovieEntity>> fetchMovies(int page) {
+    private Single<List<MovieEntity>> fetchAndSaveMovies(int page) {
 
-        return apiManager.getTopMovies(page).map(movieRepo -> {
-
-            //            saveMovies(movieRepo);
-            return movieRepo.getMovies();
-        });
+        return apiManager.getTopMovies(page)
+                .doAfterSuccess(this::saveMovies)
+                .map(MovieRepo::getMovies);
     }
 
     private void saveMovies(MovieRepo response) {
 
-        //        movieDao.save(getMoviesWithPageIndex(response));
+        movieDao.save(getMoviesWithPageIndex(response));
     }
 
-    //    private MovieEntity[] getMoviesWithPageIndex(MovieRepo repo) {
-    //
-    //        for (MovieEntity movie : repo.getMovies()) {
-    //            movie.setPage(repo.getPage());
-    //        }
-    //
-    //        return repo.getMovies();
-    //    }
+    private MovieEntity[] getMoviesWithPageIndex(MovieRepo repo) {
+
+        List<MovieEntity> movies = repo.getMovies();
+        for (MovieEntity movie : movies) {
+            movie.setPage(repo.getPage());
+        }
+
+        return movies.toArray(new MovieEntity[movies.size()]);
+    }
 
     private void clearDB() {
 

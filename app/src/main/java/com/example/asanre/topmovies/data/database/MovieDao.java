@@ -7,6 +7,10 @@ import android.arch.persistence.room.Query;
 
 import com.example.asanre.topmovies.data.model.MovieEntity;
 
+import java.util.List;
+
+import io.reactivex.Single;
+
 @Dao
 public interface MovieDao {
 
@@ -14,7 +18,7 @@ public interface MovieDao {
     void save(MovieEntity... movie);
 
     @Query("SELECT * FROM movie WHERE page = :page")
-    MovieEntity[] getMoviesByPage(int page);
+    Single<List<MovieEntity>> getMoviesByPage(int page);
 
     @Query("delete from movie")
     void clear();
